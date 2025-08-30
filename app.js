@@ -8,7 +8,7 @@ const AppError = require("./Apperror");
 const errorController = require("./Controller/errorController");
 const allowedOrigins = [
   "http://localhost:3000", // for local dev
-  "https://resplendent-souffle-5d44b3.netlify.app/",
+  "https://resplendent-souffle-5d44b3.netlify.app",
 ];
 
 const app = express();

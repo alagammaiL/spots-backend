@@ -1,29 +1,40 @@
 const app = require("./app");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 dotenv.config({ path: "./config.env" });
 
-const mongoose = require("mongoose");
-
+// MongoDB connection with timeout and proper logging
 const db = process.env.MONGODBCONNECTION.replace(
   "<db_password>",
   process.env.MONGODBPASSWORD
 );
 
 mongoose
-  .connect(db)
-  .then(() => console.log("conneted successfully"))
-  .catch((err) => console.log("error", err));
-const PORT = process.env.PORT || 8080;
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // fail after 5 seconds if DB is unreachable
+  })
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1); // exit if DB connection fails
+  });
+
+// Listen on Render-provided PORT
+const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
-  console.log("listening");
+  console.log(`Server running on port ${PORT}`);
 });
 
+// Global error handling
 process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
   process.exit(1);
 });
+
 process.on("unhandledRejection", (err) => {
-  server.close(() => {
-    process.exit(1);
-  });
+  console.error("Unhandled Rejection:", err);
+  server.close(() => process.exit(1));
 });
