@@ -6,12 +6,22 @@ const fs = require("fs");
 const path = require("path");
 const AppError = require("./Apperror");
 const errorController = require("./Controller/errorController");
+const allowedOrigins = [
+  "http://localhost:3000", // for local dev
+  "https://resplendent-souffle-5d44b3.netlify.app/", // frontend on Replit
+];
 const app = express();
 app.use("/images/users", express.static(path.join("images", "users")));
 app.use("/images/places", express.static(path.join("images", "places")));
 app.use(
   cors({
-    origin: "http://localhost:3000", // must match frontend
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
