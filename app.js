@@ -8,7 +8,8 @@ const AppError = require("./Apperror");
 const errorController = require("./Controller/errorController");
 const allowedOrigins = [
   "http://localhost:3000", // for local dev
-  "https://resplendent-souffle-5d44b3.netlify.app/", // frontend on Replit
+  "https://resplendent-souffle-5d44b3.netlify.app/",
+  "https://spots-backend-production.up.railway.app/", // frontend on Replit
 ];
 const app = express();
 app.use("/images/users", express.static(path.join("images", "users")));
