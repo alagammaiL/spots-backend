@@ -10,7 +10,7 @@ const allowedOrigins = [
   "http://localhost:3000", // for local dev
   "https://resplendent-souffle-5d44b3.netlify.app/",
 ];
-spots - backend - production.up.railway.app;
+
 const app = express();
 app.use("/images/users", express.static(path.join("images", "users")));
 app.use("/images/places", express.static(path.join("images", "places")));
